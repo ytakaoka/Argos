@@ -1,6 +1,6 @@
-package jp.co.menox.argos;
+package jp.co.menox.android.argos;
 
-import jp.co.menox.argos.thermo.bluetooth.response.Value;
+import jp.co.menox.android.argos.thermo.response.Value;
 
 public class ValueWithMacAddr {
     public Value value;

@@ -1,4 +1,4 @@
-package jp.co.menox.argos.thermo.bluetooth;
+package jp.co.menox.android.argos.thermo.service.bluetooth;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,8 +7,8 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.UUID;
 
-import jp.co.menox.argos.thermo.bluetooth.response.Info;
-import jp.co.menox.argos.thermo.bluetooth.response.Value;
+import jp.co.menox.android.argos.thermo.response.Info;
+import jp.co.menox.android.argos.thermo.response.Value;
 
 import org.json.JSONException;
 import org.json.JSONObject;

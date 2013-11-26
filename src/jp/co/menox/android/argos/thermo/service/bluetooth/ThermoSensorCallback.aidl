@@ -1,6 +1,6 @@
-package jp.co.menox.argos.thermo.bluetooth;
+package jp.co.menox.android.argos.thermo.service.bluetooth;
 
-import jp.co.menox.argos.thermo.bluetooth.response.Value;
+import jp.co.menox.android.argos.thermo.response.Value;
 
 interface ThermoSensorCallback {
     void onValueUpdatedCallback(String macaddr, in Value value);

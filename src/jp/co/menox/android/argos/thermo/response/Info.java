@@ -1,4 +1,4 @@
-package jp.co.menox.argos.thermo.bluetooth.response;
+package jp.co.menox.android.argos.thermo.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;

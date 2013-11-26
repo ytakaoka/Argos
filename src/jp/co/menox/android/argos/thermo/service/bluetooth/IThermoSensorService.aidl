@@ -1,9 +1,9 @@
-package jp.co.menox.argos.thermo.bluetooth;
+package jp.co.menox.android.argos.thermo.service.bluetooth;
 
-import jp.co.menox.argos.thermo.bluetooth.response.Info;
-import jp.co.menox.argos.thermo.bluetooth.response.Value;
-import jp.co.menox.argos.thermo.bluetooth.response.Error;
-import jp.co.menox.argos.thermo.bluetooth.ThermoSensorCallback;
+import jp.co.menox.android.argos.thermo.response.Info;
+import jp.co.menox.android.argos.thermo.response.Value;
+import jp.co.menox.android.argos.thermo.response.Error;
+import jp.co.menox.android.argos.thermo.service.bluetooth.ThermoSensorCallback;
 
 interface IThermoSensorService {
     

@@ -1,4 +1,4 @@
-package jp.co.menox.argos.thermo.bluetooth.response;
+package jp.co.menox.android.argos.thermo.response;
 
 import java.text.DateFormat;
 import java.text.ParseException;

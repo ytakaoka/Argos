@@ -1,13 +1,13 @@
-package jp.co.menox.argos.thermo.bluetooth;
+package jp.co.menox.android.argos.thermo.service.bluetooth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jp.co.menox.argos.thermo.bluetooth.response.Error;
-import jp.co.menox.argos.thermo.bluetooth.response.Info;
-import jp.co.menox.argos.thermo.bluetooth.response.Value;
+import jp.co.menox.android.argos.thermo.response.Error;
+import jp.co.menox.android.argos.thermo.response.Info;
+import jp.co.menox.android.argos.thermo.response.Value;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
