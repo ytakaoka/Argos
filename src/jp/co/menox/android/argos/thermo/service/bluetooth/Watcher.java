@@ -49,6 +49,10 @@ import android.os.Message;
         this.device = device;
         this.handler = handler;
     }
+    
+    protected BluetoothDevice getDevice() {
+        return device;
+    }
 
     @Override
     public void run() {
@@ -63,7 +67,7 @@ import android.os.Message;
 
         try {
             
-            sock = device.createRfcommSocketToServiceRecord(SPP_UUID);
+            sock = getDevice().createRfcommSocketToServiceRecord(SPP_UUID);
             sock.connect();
             inst = sock.getInputStream();
             ost = sock.getOutputStream();
@@ -172,7 +176,7 @@ import android.os.Message;
      * @param valueJson
      * @param transaction
      */
-    private void emitInfo(JSONObject infoJson, int transaction) {
+    protected void emitInfo(JSONObject infoJson, int transaction) {
         Info info = new Info();
 
         info.setTransaction(transaction);
@@ -189,13 +193,7 @@ import android.os.Message;
             info.setUnit(infoJson.getString("unit"));
         } catch (JSONException e) {}
         
-        Message msg = Message.obtain();
-        Bundle b = new Bundle();
-        b.putInt(Events.KEY, Events.EVENT_INFO);
-        b.putParcelable(DATA, info);
-        b.putString(MACADDR, device.getAddress());
-        msg.setData(b);
-        handler.sendMessage(msg);
+        emit(info);
     }
 
     /**
@@ -205,7 +203,7 @@ import android.os.Message;
      * @param valueJson
      * @param transaction
      */
-    private void emitValue(JSONObject valueJson, int transaction) {
+    protected void emitValue(JSONObject valueJson, int transaction) {
         Value value = new Value();
 
         value.setTransaction(transaction);
@@ -226,20 +224,44 @@ import android.os.Message;
             value.setUnit(valueJson.getString("unit"));
         } catch (JSONException e) {}
         
+        emit(value);
+    }
+
+    /**
+     * emit VALUE event.
+     * 
+     * @param value payload of event
+     */
+    protected void emit(Value value) {
         Message msg = Message.obtain();
         Bundle b = new Bundle();
         b.putInt(Events.KEY, Events.EVENT_VALUE);
         b.putParcelable(DATA, value);
-        b.putString(MACADDR, device.getAddress());
+        b.putString(MACADDR, getDevice().getAddress());
         msg.setData(b);
         handler.sendMessage(msg);
     }
     
-    private void emitDisconnected() {
+    /**
+     * emit INFO event.
+     * 
+     * @param info payload of event
+     */
+    protected void emit(Info info) {
+        Message msg = Message.obtain();
+        Bundle b = new Bundle();
+        b.putInt(Events.KEY, Events.EVENT_INFO);
+        b.putParcelable(DATA, info);
+        b.putString(MACADDR, getDevice().getAddress());
+        msg.setData(b);
+        handler.sendMessage(msg);
+    }
+    
+    protected void emitDisconnected() {
         Message msg = Message.obtain();
         Bundle b = new Bundle();
         b.putInt(Events.KEY, Events.EVENT_DISCONNECTED);
-        b.putString(MACADDR, device.getAddress());
+        b.putString(MACADDR, getDevice().getAddress());
         msg.setData(b);
         handler.sendMessage(msg);
     }

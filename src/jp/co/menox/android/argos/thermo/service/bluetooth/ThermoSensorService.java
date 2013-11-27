@@ -11,6 +11,7 @@ import jp.co.menox.android.argos.thermo.response.Value;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,10 +35,16 @@ public class ThermoSensorService extends Service {
         super.onDestroy();
     }
 
-    private final IThermoSensorService.Stub mBinder = new IThermoSensorServiceImpl();
+    private final IThermoSensorService.Stub mBinder = new IThermoSensorServiceImpl(
+            this);
 
     public static class IThermoSensorServiceImpl extends
             IThermoSensorService.Stub {
+        public IThermoSensorServiceImpl(Context context) {
+            this.context = context;
+        }
+
+        private Context context;
         private Map<String, Info> infos = new HashMap<String, Info>();
         private Map<String, Value> values = new HashMap<String, Value>();
 
@@ -49,8 +56,8 @@ public class ThermoSensorService extends Service {
 
         protected void onValue(Value value, String macaddr) {
             values.put(macaddr, value);
-            
-            for(ThermoSensorCallback callback : callbacks) {
+
+            for (ThermoSensorCallback callback : callbacks) {
                 try {
                     callback.onValueUpdatedCallback(macaddr, value);
                 } catch (RemoteException e) {
@@ -63,8 +70,8 @@ public class ThermoSensorService extends Service {
             infos.remove(macaddr);
             values.remove(macaddr);
             watchers.remove(macaddr);
-            
-            for(ThermoSensorCallback callback : callbacks) {
+
+            for (ThermoSensorCallback callback : callbacks) {
                 try {
                     callback.onDeviceDisconnectedCallback(macaddr);
                 } catch (RemoteException e) {
@@ -111,7 +118,20 @@ public class ThermoSensorService extends Service {
                 if (!device.getAddress().equals(macaddr)) {
                     continue;
                 }
-                Watcher watcher = new Watcher(device, new WatcherEventHandler(this));
+                Watcher watcher = null;
+                switch (device.getType()){
+                    case BluetoothDevice.DEVICE_TYPE_CLASSIC:
+                    case BluetoothDevice.DEVICE_TYPE_DUAL:
+                        watcher = new Watcher(device, new WatcherEventHandler(this));
+                        break;
+                    case BluetoothDevice.DEVICE_TYPE_LE:
+                        watcher = new WatcherLE(device, context,
+                                new WatcherEventHandler(this));
+                        break;
+                     default:
+                         continue;
+                }
+                
                 watchers.put(macaddr, watcher);
                 watcher.start();
             }
