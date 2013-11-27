@@ -119,6 +119,7 @@ public class ThermoSensorService extends Service {
                     continue;
                 }
                 Watcher watcher = null;
+                
                 switch (device.getType()){
                     case BluetoothDevice.DEVICE_TYPE_CLASSIC:
                     case BluetoothDevice.DEVICE_TYPE_DUAL:
