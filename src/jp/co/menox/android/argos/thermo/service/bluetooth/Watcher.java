@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-public class Watcher extends Thread {
+/*package*/ class Watcher extends Thread {
     
     public static final String DATA = "DATA";
     public static final String MACADDR = "MACADDR";
@@ -62,6 +62,7 @@ public class Watcher extends Thread {
         }
 
         try {
+            
             sock = device.createRfcommSocketToServiceRecord(SPP_UUID);
             sock.connect();
             inst = sock.getInputStream();
