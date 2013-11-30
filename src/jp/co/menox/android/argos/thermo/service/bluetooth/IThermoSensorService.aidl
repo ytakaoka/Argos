@@ -10,8 +10,18 @@ interface IThermoSensorService {
     /**
      * 端末の MACアドレスを指定して監視を始める。
      * 指定された MACアドレスの端末が見つからないとか、Bluetooth が利用できないという場合には、何もしない。
+     * 
+     * @param macaddr 探索対象の Classic Bluetooth デバイスの MAC address。
      */
     oneway void startWatch(String macaddr);
+    
+    /**
+     * 指定された時間だけデバイスを探索して発見できた BLE のデバイス全てに対して監視を始める。
+     * Bluetooth が利用できないという場合には、何もしない。
+     * 
+     * @param scanDulation 探索にかける時間(ms)。0以下だった場合は何もしない。
+     */
+    oneway void startWatchLe(long scanDulation);
     
     /**
      * 端末の MACアドレスを指定して監視をやめる。

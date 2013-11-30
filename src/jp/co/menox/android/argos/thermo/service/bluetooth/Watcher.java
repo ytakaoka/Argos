@@ -32,6 +32,8 @@ import android.os.Message;
         public static final int EVENT_VALUE = 2;
     }
     
+
+
     private final static UUID SPP_UUID = UUID
             .fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -264,6 +266,53 @@ import android.os.Message;
         b.putString(MACADDR, getDevice().getAddress());
         msg.setData(b);
         handler.sendMessage(msg);
+    }
+    
+    static class WatcherEventHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle b = msg.getData();
+    
+            Integer event = b.getInt(Events.KEY);
+    
+            DISPATCH: {
+                if (event.equals(Events.EVENT_INFO)) {
+                    onInfo((Info) b.getParcelable(DATA),
+                            b.getString(MACADDR));
+                    break DISPATCH;
+                }
+                if (event.equals(Events.EVENT_VALUE)) {
+                    onValue((Value) b.getParcelable(DATA),
+                            b.getString(MACADDR));
+                    break DISPATCH;
+                }
+                if (event.equals(Events.EVENT_DISCONNECTED)) {
+                    onDisconnected(b.getString(MACADDR));
+                    break DISPATCH;
+                }
+            }
+            msg.recycle();
+        }
+        
+        /**
+         * センサ端末の詳細情報が得られた時にコールされる。デフォルトでは何もしない。
+         * @param info 端末の詳細情報
+         * @param macaddr 端末のMACアドレス
+         */
+        public void onInfo(Info info, String macaddr){} // noop by default
+        
+        /**
+         * センサの測定値が更新された時にコールされる。
+         * @param value 最新の測定値
+         * @param macaddr センサ端末のMACアドレス
+         */
+        public void onValue(Value value, String macaddr){} // noop by default
+        
+        /**
+         * 端末が切断されたときにコールされる。
+         * @param macaddr 切断されたセンサ端末のMACアドレス
+         */
+        public void onDisconnected(String macaddr){} // noop by default
     }
 }
 
