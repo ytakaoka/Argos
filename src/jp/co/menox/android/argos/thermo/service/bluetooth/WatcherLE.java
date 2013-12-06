@@ -144,7 +144,7 @@ import android.os.Handler;
             value.setUnit(unit[unitOffset]);
             value.setValue(chars.getFloatValue(BluetoothGattCharacteristic.FORMAT_FLOAT, 1 + unitOffset));
             Calendar c = Calendar.getInstance();
-            c.set(raw[9] * 8 + raw[10],
+            c.set(raw[9] * 16 + raw[10],
                     raw[11],
                     raw[12],
                     raw[13],
